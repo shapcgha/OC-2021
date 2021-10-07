@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "Enter 1 for nano"
+echo "Enter 2 for vi"
+echo "Enter 3 for links"
+echo "Enter 4 for exit"
+read number
+case $number in
+1)
+nano
+;;
+2)
+vi
+;;
+3)
+links
+;;
+4)
+exit 0
+;;
+esac

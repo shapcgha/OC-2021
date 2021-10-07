@@ -1,0 +1,20 @@
+!#/bin/bash
+v1=$1
+v2=$2
+v3=$3
+if [ $v1 -ge $v2 ]
+then
+if [ $v1 -ge $v3 ]
+then 
+echo $v1
+else
+echo $v3
+fi
+else
+if [ $v2 -ge $v3 ]
+then
+echo $v2
+else
+echo $v3
+fi
+fi

@@ -1,0 +1,9 @@
+#!/bin/bash
+fullstring=""
+read string
+while [ "$string" != "q" ]
+do
+fullstring+="$string"
+read string
+done
+echo $fullstring
