@@ -1,2 +1,0 @@
-#!/bin/bash
-grep -o -h -s -w -E "\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}\b" /etc/* | tr '\n' ',' > emails.lst

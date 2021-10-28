@@ -1,0 +1,2 @@
+#!bin/bash
+ps ax -o pid,ppid,comm --sort=start_time | awk -v pid=$$ -v ppid!=$PPID '{if($2!=pid && $1!=ppid) print $0}' | tail -n1 | awk '{print $1}'
