@@ -1,0 +1,23 @@
+#!bin/bash
+cat answer4 | awk '
+BEGIN 
+{
+ppid=0;
+m=0;
+count=0;
+} 
+{
+now=substr($2, 6)
+art=substr($3,5)
+if [[ now == ppid ]] 
+then
+	let count=$count+1;
+	let m=$m+$art
+else
+	print "\nAverage_Running_Children_of_ParentID=" ppid " is " m / count "\n"
+	count=1
+	ppid=now
+	m=art
+fi
+print $1"\t\t"$2"\t\t"$3
+}' > answer5
