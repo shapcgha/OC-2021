@@ -1,12 +1,13 @@
-for pid in $(ps uax | awk 'FNR > 1 { print $2 }')
- do
-    if [ -r /proc/$pid/ ] && [ -r /proc/$pid/status ] && [ -r /proc/$pid/sched ]; then	
-        ppid=$(grep "PPid" "/proc/$pid/status" | awk '{ print $2 }')
-        sum_exec_runtime=$(grep "sum_exec_runtime" "/proc/$pid/sched" | awk '{ print $3 }')
-        nr_switches=$(grep "nr_switches" "/proc/$pid/sched" | awk '{ print $3 }')
-        art=$(echo "$sum_exec_runtime  $nr_switches" | awk '{ print $1 / $2 }')
-        echo "$pid $ppid $art" >> $1
-    fi
+#!/bin/bash
+answer=""
+for pid in $(ps uax | awk '{ print $2 }' | sed 1d)
+do
+	if [[ -r /proc/$pid/ ]] && [[ -r /proc/$pid/status ]] && [[ -r /proc/$pid/sched ]]; then
+	ppid=$(grep "PPid" "/proc/$pid/status" | awk '{ print $2 }')
+        runtime=$(grep "sum_exec_runtime" "/proc/$pid/sched" | awk '{ print $3 }')
+        switches=$(grep "nr_switches" "/proc/$pid/sched" | awk '{ print $3 }')
+        art=$(echo $runtime" "$switches | awk '{ print $1 / $2 }')
+        answer=$answer$pid" "$ppid" "$art"\n"
+	fi
 done
-echo "$(sort "$1" -k2 -n | \
-	awk '{ print "ProcessID="$1" : Parent_ProcessID="$2" : Average_Running_Time="$3 }')" > $1
+echo -e $answer | sort -k2 -n | sed 1d | awk '{ print "PID="$1" PPID="$2" art="$3 }' > answer4
