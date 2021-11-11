@@ -1,0 +1,33 @@
+#!/bin/bash
+result=1
+op='+'
+tail -f pipe | while true
+do
+	read LINE
+	case $LINE in
+	"QUIT")
+	echo "End of work"
+	exit
+	;;
+	'+')
+	op='+'
+	;;
+	'mul')
+	op='mul'
+	;;
+	[0-9]*)
+	if [[$op == 'mul']]
+	then
+	let "result=$result*$LINE"
+	else
+	let "result=$result+$LINE"
+	fi
+	echo $result
+	;;
+	*)
+	echo "ERROR input mismatch"
+	exit
+	;;
+	esac
+done
+
