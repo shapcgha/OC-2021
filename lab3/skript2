@@ -1,0 +1,4 @@
+#!/bin/bash
+bash ./skript1
+at now + 2 minutes -f skript1
+tail -f ~/report

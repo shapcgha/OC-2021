@@ -1,0 +1,17 @@
+#!/bin/bash
+while true; do
+	read LINE
+	if [[ "$LINE" == '*' ]]
+	then
+	LINE="mul"
+	fi
+	echo $LINE > pipe
+	if [[ "$LINE" == "QUIT" ]] 
+	then
+	exit
+	fi
+	if [[ "$LINE" != '+' && "$LINE" != 'mul' && "$LINE" != [0-9]* ]]
+	then
+	exit
+	fi
+done
