@@ -1,2 +1,2 @@
 #!bin/bash
-ps ax -o pid,ppid,comm --sort=start_time | awk -v proc=$$ -v parent=$PPID '{if($2!=proc && $1!=parent) print $0}' | tail -n1 |awk '{print $0}'
+ps ax -o pid,ppid,comm --sort=start_time | awk -v proc=$$ -v parent=$PPID '{if($2!=proc && $2!=parent) print $0}' | tail -n1 |awk '{print $1}'

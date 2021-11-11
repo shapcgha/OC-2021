@@ -2,33 +2,24 @@
 list=$(ps aux | awk '{print $2}' | sed 1d)
 line=""
 answer=""
-
 for pid in $list
 do
-
-    if [[ -f /proc/$pid/io ]]
-    then
+	if [[ -f /proc/$pid/io ]]
+	then
 	val=$(grep "read_bytes" /proc/$pid/io | awk '{print $2}')
-	line=$line"PID"$pid $val"\n"
-    fi
-
+	line=$line"PID"$pid" "$val"\n"
+	fi
 done
-
 sleep 60s
-
 for pid in $list
 do
-
-    if [[ -f /proc/$pid/io ]]
-    then
+	if [[ -f /proc/$pid/io ]]
+	then
 	new=$(grep "read_bytes" /proc/$pid/io | awk '{print $2}')
-	oldline=$(echo -e $outtext | grep "PID"$pid)
-	oldval=$(echo -e $oldline | awk '{print $2}')
+	old=$(echo -e $line | grep "PID"$pid | awk '{print $2}')
 
-	let delta=$newval-$oldval
-	answer=$answer"PID:"$pid" DATA:"$delta"\n"
-    fi
-
+	let delta=$new-$old
+	answer=$answer"PID: "$pid" DATA: "$delta"\n"
+	fi
 done
-
 echo -e $answer | sort -nk4 | sed 1d | head -n 3

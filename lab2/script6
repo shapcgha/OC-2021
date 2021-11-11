@@ -1,22 +1,16 @@
 #!bin/bash
 list=$(ps aux | awk '{print $2}' | sed 1d)
-maxpid=0
-max=0
-for pid in $list
-do
-
-    if [[ -f /proc/$pid/status ]]
-    then
-
+maxpid=-1
+max=-1
+for pid in $list ; do
+	if [[ -f /proc/$pid/status ]]
+    	then
 	temp=$(grep "VmRSS" /proc/$pid/status | awk '{print $2}')
-
 	if [[ $temp != "" && $temp -ge $maxval ]]
 	then
-	    max=$temp
-	    maxpid=$pid
+	max=$temp
+	maxpid=$pid
 	fi
-
 fi
 done
 echo -e "PID:" $maxpid "\tMEM:" $max
-top 
