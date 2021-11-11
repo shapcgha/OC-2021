@@ -12,11 +12,11 @@ do
 	'+')
 	op='+'
 	;;
-	'mul')
+	mul)
 	op='mul'
 	;;
 	[0-9]*)
-	if [[$op == 'mul']]
+	if [[ "$op" == "mul" ]]
 	then
 	let "result=$result*$LINE"
 	else
