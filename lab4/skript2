@@ -4,38 +4,38 @@ then
 	echo "input must be 1 file name"
 	exit 1
 fi
-if ! [ -e $HOME/.trash.log
+if ! [ -e $HOME/.trash.log ]
 then
 	echo "nothing in trash"
 	exit 1
-for i in $(cat "$HOME/.trash.log")
-do 
+fi
+for line in $(cat "$HOME/.trash.log")
+do
 	path=$(echo $line | awk 'BEGIN{FS=":"} {print $1}')
     	trashName=$(echo $line | awk 'BEGIN{FS=":"} {print $2}')
-	fileName=$(echo $file_path | awk 'BEGIN{FS="/"} {print $(NF)}')
+	fileName=$(echo $path | awk 'BEGIN{FS="/"} {print $(NF)}')
 	if [ "$1" = "$fileName" ]; then
         	echo "Do you want to restore $path? y/n"
 		read ans
 		if [ "$ans" = "y" ]
 		then
 			newPath="$HOME"
-	    		if [ -d $(dirname $file_path) ] 
+	    		if [ -d $(dirname $path) ]
 			then
-			newPath=$(dirname $file_path)
+			newPath=$(dirname $path)
 	    		fi
-			if ! [ -f $HOME/.trash/$trashName]
+			if ! [ -f $HOME/.trash/$trashName ]
 			then
 			echo "Link doesn't exist anymore"
 			continue
 			fi
-		while [ -f "$newPath/$fileName" ]
-		do
-			echo "Input another name for your file"
-			read fileName
-		done
-		ln "$HOME/.trash/$trashName" "$newPath/$fileName"
-	    	rm "$HOME/.trash/$trashName"
+			while [ -f "$newPath/$fileName" ]
+			do
+				echo "Input another name for your file"
+				read fileName
+			done
+			ln "$HOME/.trash/$trashName" "$newPath/$fileName"
+	    		rm "$HOME/.trash/$trashName"
 		fi
 	fi
 done
-		
