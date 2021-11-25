@@ -1,7 +1,12 @@
 #!bin/bash
-if [[ "$1" =~ ^[a-zA-Z0-9](?[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\.[a-zA-Z0-9_-]+$ ]] || ! [ -e "$1" ]
+if [ $# -ne 1 ]
 then
-	echo "lol"
+	echo "input must be 1 file name"
+	exit 1
+fi
+if ! [ -f "$1" ]
+then
+	echo "no such file in this directory"
 	exit 1
 fi
 if ! [ -d $HOME/.trash ]
