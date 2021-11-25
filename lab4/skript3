@@ -9,12 +9,17 @@ todaySec=$(date --date=$dateNow "+%s")
 lastbackup=$(ls $backups -1 | grep -E "Backup-[0-9]{4}-[0-9]{2}-[0-9]{2}" | sort -r -k2 | head -1)
 lastbackupSec=$(date --date=$(ls $backups -1 | grep -Eo "Backup-[0-9]{4}-[0-9]{2}-[0-9]{2}" | sort -r -k2 | head -1 | sed "s/^Backup-//") "+%s")
 let dateDiff=($todaySec\-$lastbackupSec)/60/60/24
+if ! [ -f $backupReport ]
+then
+touch $backupReport
+fi
 if [ -z $lastbackup ]
 then
 	mkdir $backups$backupPrefix$dateNow
 	nowbackup=$backups$backupPrefix$dateNow"/"
 	isNewDir=true
-fi
+	echo $nowbackup
+else
 if [ "$dateDiff" -le 7 ]
 then
     	nowbackup=$backups$lastbackup"/"
@@ -23,12 +28,13 @@ else
  	nowbackup=$backups$backupPrefix$dateNow"/"
     	isNewDir=true
 fi
+fi
 if [ "$isNewDir" = true ]
 then
     	echo "backup created on "$dateNow" from directory "$source" Files:" >> $backupReport
     	for file in $(ls $source -1)
     	do
-        cp $source$file $nowbackup$file
+        cp "$source$file" "$nowbackup$file"
         echo $file >> $backupReport
     	done
 else
@@ -36,11 +42,11 @@ else
     	for file in $(ls $source -1)
     	do
     	currentfile=$nowbackup$file
-    	if [ -f currentfile ];
+    	if [ -f $currentfile ];
         	then
-        	source_size=$(stat $source$file -c%s)
-        	actual_size=$(stat $currentfile -c%s)
-            	if [[ "$source_file" != "$actual_size" ]];
+        	source_size=$(du $source$file | awk '{print $1}')
+        	actual_size=$(du $currentfile | awk '{print $1}')
+            	if [ "$source_size" -ne "$actual_size" ]
             	then
             	mv $currentfile $currentfile"."$dateNow
             	cp $source$file $currentfile

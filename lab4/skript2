@@ -36,6 +36,7 @@ do
 			done
 			ln "$HOME/.trash/$trashName" "$newPath/$fileName"
 	    		rm "$HOME/.trash/$trashName"
+			cat "$HOME/.trash.log" | grep -v "$line" > "$HOME/.trash.log"
 		fi
 	fi
 done

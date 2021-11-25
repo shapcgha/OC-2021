@@ -17,7 +17,7 @@ if ! [ -e $HOME/.trash.log ]
 then
 	touch $HOME/.trash.log
 fi
-trashName=$(cat $HOME/.trash.log | wc -l)
+trashName=$(date +%s)
 ln "$1" "$HOME/.trash/$trashName"
 rm "$1"
 echo "$PWD/$1:$trashName" >> $HOME/.trash.log
