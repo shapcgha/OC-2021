@@ -1,0 +1,18 @@
+#!bin/bash
+if [[ "$1" =~ ^[a-zA-Z0-9](?[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\.[a-zA-Z0-9_-]+$ ]] || ! [ -e "$1" ]
+then
+	echo "lol"
+	exit 1
+fi
+if ! [ -d $HOME/.trash ]
+then
+	mkdir $HOME/.trash
+fi
+if ! [ -e $HOME/.trash.log ]
+then
+	touch $HOME/.trash.log
+fi
+trashName=$(cat $HOME/.trash.log | wc -l)
+ln "$1" "$HOME/.trash/$trashName"
+rm "$1"
+echo "$PWD/$1:$trashName" >> $HOME/.trash.log

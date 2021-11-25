@@ -1,0 +1,2 @@
+#!bin/bash
+for i in $(grep -h "$1" $HOME/trash.log
