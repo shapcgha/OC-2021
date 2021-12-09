@@ -1,3 +1,4 @@
 #!/bin/bash
-ps uxa | awk '{ if ($1=="user") print $0}' | wc -l > answer1
-ps uxa | awk '{ if ($1=="user") print $2, ":", $11 }' >> answer1
+a=$(ps -fu user | awk '{print $2 ":" $8 "\\n" }' | tail -n +2)
+echo "$a" | wc -w > answer1
+echo "$a" >> answer1
